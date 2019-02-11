@@ -1,62 +1,121 @@
-import 'dart:async' show Future;
-import 'package:async_resource/async_resource.dart';
-import 'dart:convert';
-
+import 'dart:async';
 import 'package:mmkv/mmkv.dart';
-export 'package:async_resource/async_resource.dart';
+import 'package:async_resource/async_resource.dart';
 
-/// Resource for asyncResource with MMKV
-class MMKVResource<T> extends LocalResource<T> {
-  MMKVResource(this.key, this.path, {Parser<T> parser})
-      : super(path: path, parser: parser);
+/// Store value using [Mmkv].
+abstract class MmkvResource<T> extends LocalResource<T> {
+  MmkvResource(String key, {this.saveLastModified: false}) : super(path: key);
 
-  final String key;
-  final String path;
+  final bool saveLastModified;
 
-  Future<Mmkv> get _instance async => await Mmkv.defaultInstance();
+  String get _key => path;
+  Future<Mmkv> get _mmkvInstance => Mmkv.defaultInstance();
 
   @override
-  Future<bool> get exists async {
-    var mmkv = await _instance;
-    return await mmkv.containsKey(key);
-  }
+  Future<bool> get exists async => (await value) != null;
 
-  Future<Map<String, dynamic>> get _read async {
-    var mmkv = await _instance;
-    if (!await exists) {
-      return null;
-    }
-    var value = await mmkv.getString(key);
-    return jsonDecode(value);
-  }
+  @override
+  Future fetchContents() => value;
 
   @override
   Future<DateTime> get lastModified async {
-    var contentPlusTime = await _read;
-    return DateTime.parse(contentPlusTime['lastModified']);
+    if (saveLastModified) {
+      return DateTime.fromMillisecondsSinceEpoch(
+          await (await _mmkvInstance).getInt(modifiedKey));
+    }
+    return null;
   }
 
-  @override
-  Future fetchContents() async {
-    var contentPlusTime = await _read;
-    return contentPlusTime['contents'];
+  Future<T> get value;
+
+  String get modifiedKey => '${_key}_modified';
+
+  void _handleLastModified(Mmkv mmkv, contents, bool written) {
+    if (saveLastModified && written) {
+      if (contents == null)
+        mmkv.remove(modifiedKey);
+      else
+        mmkv.putInt(modifiedKey, DateTime.now().millisecondsSinceEpoch);
+    }
   }
+
+  Future<bool> _write(contents);
 
   @override
   Future<T> write(contents) async {
-    var mmkv = await _instance;
-
-    String lastModified = DateTime.now().toIso8601String();
-    Map contentPlusTime = {'lastModified': lastModified, 'contents': contents};
-
-    mmkv.putString(key, jsonEncode(contentPlusTime));
+    final p = await _mmkvInstance;
+    var writeResult = await _write(contents);
+    _handleLastModified(p, contents, writeResult);
     return super.write(contents);
   }
 
   @override
   Future<void> delete() async {
-    var mmkv = await _instance;
-    await mmkv.remove(key);
-    super.delete();
+    await (await _mmkvInstance).remove(_key);
+    return super.delete();
+  }
+}
+
+/// A String [Mmkv] entry.
+class StringMmkvResource extends MmkvResource<String> {
+  StringMmkvResource(String key, {bool saveLastModified: false})
+      : super(key, saveLastModified: saveLastModified);
+
+  @override
+  Future<String> get value async => (await _mmkvInstance).getString(_key);
+
+  @override
+  Future<bool> _write(contents) async {
+    final p = await _mmkvInstance;
+    p.putString(_key, contents);
+    return true;
+  }
+}
+
+/// A boolean [Mmkv] entry.
+class BoolMmkvResource extends MmkvResource<bool> {
+  BoolMmkvResource(String key, {bool saveLastModified: false})
+      : super(key, saveLastModified: saveLastModified);
+
+  @override
+  Future<bool> get value async => (await _mmkvInstance).getBoolean(_key);
+
+  @override
+  Future<bool> _write(contents) async {
+    final p = await _mmkvInstance;
+    p.putBoolean(_key, contents);
+    return true;
+  }
+}
+
+/// An integer [Mmkv] entry.
+class IntMmkvResource extends MmkvResource<int> {
+  IntMmkvResource(String key, {bool saveLastModified: false})
+      : super(key, saveLastModified: saveLastModified);
+
+  @override
+  Future<int> get value async => (await _mmkvInstance).getInt(_key);
+
+  @override
+  Future<bool> _write(contents) async {
+    final p = await _mmkvInstance;
+    p.putInt(_key, contents);
+    return true;
+  }
+}
+
+/// A double [Mmkv] entry.
+class DoubleMmkvResource extends MmkvResource<double> {
+  DoubleMmkvResource(String key, {bool saveLastModified: false})
+      : super(key, saveLastModified: saveLastModified);
+
+  @override
+  Future<double> get value async => (await _mmkvInstance).getDouble(_key);
+
+  @override
+  Future<bool> _write(contents) async {
+    final p = await _mmkvInstance;
+    p.putDouble(_key, contents);
+    return true;
   }
 }
