@@ -12,7 +12,10 @@ dependencies:
     sdk: flutter
   async_resource: ^0.1.0
   shared_preferences: ^0.4.0
-  mmkv: ^0.0.4
+  flutter_mmkv: 
+    git:
+      url: https://github.com/iqbalmineraltown/flutter_mmkv
+
 
 dev_dependencies:
   flutter_test:

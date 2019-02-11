@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:mmkv/mmkv.dart';
+import 'package:flutter_mmkv/flutter_mmkv.dart';
 import 'package:async_resource/async_resource.dart';
 
 /// Store value using [Mmkv].
@@ -9,7 +9,6 @@ abstract class MmkvResource<T> extends LocalResource<T> {
   final bool saveLastModified;
 
   String get _key => path;
-  Future<Mmkv> get _mmkvInstance => Mmkv.defaultInstance();
 
   @override
   Future<bool> get exists async => (await value) != null;
@@ -21,7 +20,7 @@ abstract class MmkvResource<T> extends LocalResource<T> {
   Future<DateTime> get lastModified async {
     if (saveLastModified) {
       return DateTime.fromMillisecondsSinceEpoch(
-          await (await _mmkvInstance).getInt(modifiedKey));
+          await FlutterMmkv.decodeInt(modifiedKey));
     }
     return null;
   }
@@ -30,12 +29,13 @@ abstract class MmkvResource<T> extends LocalResource<T> {
 
   String get modifiedKey => '${_key}_modified';
 
-  void _handleLastModified(Mmkv mmkv, contents, bool written) {
+  Future<void> _handleLastModified(contents, bool written) async {
     if (saveLastModified && written) {
       if (contents == null)
-        mmkv.remove(modifiedKey);
+        await FlutterMmkv.removeValueForKey(modifiedKey);
       else
-        mmkv.putInt(modifiedKey, DateTime.now().millisecondsSinceEpoch);
+        await FlutterMmkv.encodeInt(
+            modifiedKey, DateTime.now().millisecondsSinceEpoch);
     }
   }
 
@@ -43,15 +43,14 @@ abstract class MmkvResource<T> extends LocalResource<T> {
 
   @override
   Future<T> write(contents) async {
-    final p = await _mmkvInstance;
     var writeResult = await _write(contents);
-    _handleLastModified(p, contents, writeResult);
+    await _handleLastModified(contents, writeResult);
     return super.write(contents);
   }
 
   @override
   Future<void> delete() async {
-    await (await _mmkvInstance).remove(_key);
+    await FlutterMmkv.removeValueForKey(_key);
     return super.delete();
   }
 }
@@ -62,12 +61,11 @@ class StringMmkvResource extends MmkvResource<String> {
       : super(key, saveLastModified: saveLastModified);
 
   @override
-  Future<String> get value async => (await _mmkvInstance).getString(_key);
+  Future<String> get value async => FlutterMmkv.decodeString(_key);
 
   @override
   Future<bool> _write(contents) async {
-    final p = await _mmkvInstance;
-    p.putString(_key, contents);
+    FlutterMmkv.encodeString(_key, contents);
     return true;
   }
 }
@@ -78,12 +76,11 @@ class BoolMmkvResource extends MmkvResource<bool> {
       : super(key, saveLastModified: saveLastModified);
 
   @override
-  Future<bool> get value async => (await _mmkvInstance).getBoolean(_key);
+  Future<bool> get value async => FlutterMmkv.decodeBool(_key);
 
   @override
   Future<bool> _write(contents) async {
-    final p = await _mmkvInstance;
-    p.putBoolean(_key, contents);
+    FlutterMmkv.encodeBool(_key, contents);
     return true;
   }
 }
@@ -94,12 +91,11 @@ class IntMmkvResource extends MmkvResource<int> {
       : super(key, saveLastModified: saveLastModified);
 
   @override
-  Future<int> get value async => (await _mmkvInstance).getInt(_key);
+  Future<int> get value async => FlutterMmkv.decodeInt(_key);
 
   @override
   Future<bool> _write(contents) async {
-    final p = await _mmkvInstance;
-    p.putInt(_key, contents);
+    FlutterMmkv.encodeInt(_key, contents);
     return true;
   }
 }
@@ -110,12 +106,11 @@ class DoubleMmkvResource extends MmkvResource<double> {
       : super(key, saveLastModified: saveLastModified);
 
   @override
-  Future<double> get value async => (await _mmkvInstance).getDouble(_key);
+  Future<double> get value async => FlutterMmkv.decodeDouble(_key);
 
   @override
   Future<bool> _write(contents) async {
-    final p = await _mmkvInstance;
-    p.putDouble(_key, contents);
+    FlutterMmkv.encodeDouble(_key, contents);
     return true;
   }
 }

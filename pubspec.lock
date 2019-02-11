@@ -41,6 +41,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_mmkv:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "0c9df8decaf3ea877dd010b8b281130fc7cda68f"
+      url: "https://github.com/iqbalmineraltown/flutter_mmkv"
+    source: git
+    version: "1.1.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -81,13 +90,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
-  mmkv:
-    dependency: "direct main"
-    description:
-      name: mmkv
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   path:
     dependency: transitive
     description:
