@@ -29,12 +29,12 @@ abstract class MmkvResource<T> extends LocalResource<T> {
 
   String get modifiedKey => '${_key}_modified';
 
-  Future<void> _handleLastModified(contents, bool written) async {
+  void _handleLastModified(contents, bool written) {
     if (saveLastModified && written) {
       if (contents == null)
-        await FlutterMmkv.removeValueForKey(modifiedKey);
+        FlutterMmkv.removeValueForKey(modifiedKey);
       else
-        await FlutterMmkv.encodeInt(
+        FlutterMmkv.encodeInt(
             modifiedKey, DateTime.now().millisecondsSinceEpoch);
     }
   }
@@ -44,7 +44,7 @@ abstract class MmkvResource<T> extends LocalResource<T> {
   @override
   Future<T> write(contents) async {
     var writeResult = await _write(contents);
-    await _handleLastModified(contents, writeResult);
+    _handleLastModified(contents, writeResult);
     return super.write(contents);
   }
 
