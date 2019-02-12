@@ -11,9 +11,11 @@ packages:
   async_resource:
     dependency: "direct main"
     description:
-      name: async_resource
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: a56be86197a7549f9850932bd0c8e00b665a4241
+      url: "https://github.com/iqbalmineraltown/async_resource.git"
+    source: git
     version: "0.1.4"
   boolean_selector:
     dependency: transitive
@@ -110,7 +112,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.18.1"
+    version: "0.20.0"
   service_worker:
     dependency: transitive
     description:
