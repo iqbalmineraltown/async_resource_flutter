@@ -13,10 +13,10 @@ dependencies:
   shared_preferences: ^0.4.0
   async_resource:
     git:
-      url: https://github.com/iqbalmineraltown/async_resource.git
+      url: git@gitlab.com:ovaltech/async_resource.git
   flutter_mmkv: 
     git:
-      url: https://github.com/iqbalmineraltown/flutter_mmkv
+      url: git@gitlab.com:ovaltech/flutter_mmkv.git
 
 
 dev_dependencies:
