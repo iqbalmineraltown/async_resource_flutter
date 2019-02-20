@@ -12,9 +12,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: a56be86197a7549f9850932bd0c8e00b665a4241
-      url: "https://github.com/iqbalmineraltown/async_resource.git"
+      ref: "v0.2.1"
+      resolved-ref: b423803070553165e76f29c8e49f4fc596995595
+      url: "git@gitlab.com:ovaltech/async_resource.git"
     source: git
     version: "0.1.4"
   boolean_selector:
@@ -47,9 +47,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
+      ref: "v1.1.4"
       resolved-ref: "0c9df8decaf3ea877dd010b8b281130fc7cda68f"
-      url: "https://github.com/iqbalmineraltown/flutter_mmkv"
+      url: "git@gitlab.com:ovaltech/flutter_mmkv.git"
     source: git
     version: "1.1.3"
   flutter_test:
