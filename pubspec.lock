@@ -12,8 +12,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.2.1"
-      resolved-ref: b423803070553165e76f29c8e49f4fc596995595
+      ref: "v0.2.2"
+      resolved-ref: "5382eee49f4904ad866684e764bed0f386baeb1b"
       url: "git@gitlab.com:ovaltech/async_resource.git"
     source: git
     version: "0.1.4"
