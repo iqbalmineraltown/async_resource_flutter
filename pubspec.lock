@@ -7,7 +7,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.2.0"
   async_resource:
     dependency: "direct main"
     description:
@@ -47,11 +47,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.1.4"
-      resolved-ref: "0c9df8decaf3ea877dd010b8b281130fc7cda68f"
+      ref: "v1.2.0"
+      resolved-ref: e52267f8829d8848b3dbb443e36ddd69fc93bfbe
       url: "git@gitlab.com:ovaltech/flutter_mmkv.git"
     source: git
-    version: "1.1.3"
+    version: "1.2.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -84,7 +84,7 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.3+1"
+    version: "0.12.5"
   meta:
     dependency: transitive
     description:
@@ -99,13 +99,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.2"
+  pedantic:
+    dependency: transitive
+    description:
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0"
   quiver:
     dependency: transitive
     description:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.3"
   rxdart:
     dependency: transitive
     description:
@@ -126,7 +133,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.5.3+1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -138,7 +145,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.1"
+    version: "1.5.5"
   stack_trace:
     dependency: transitive
     description:
@@ -152,7 +159,7 @@ packages:
       name: stream_channel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.8"
+    version: "2.0.0"
   string_scanner:
     dependency: transitive
     description:
@@ -166,14 +173,14 @@ packages:
       name: term_glyph
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   test_api:
     dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "0.2.5"
   typed_data:
     dependency: transitive
     description:
@@ -189,5 +196,5 @@ packages:
     source: hosted
     version: "2.0.8"
 sdks:
-  dart: ">=2.0.0 <3.0.0"
-  flutter: ">=0.1.4 <2.0.0"
+  dart: ">=2.2.0 <3.0.0"
+  flutter: ">=1.5.0 <2.0.0"
